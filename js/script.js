@@ -24,8 +24,7 @@ FSJS project 2 - List Filter and Pagination
 // - That way I can have all students saved in one DOM variable and manipulate which ones are displayed.
 
 const list = document.getElementsByClassName('student-list')[0].children;
-
-
+const numOfPages = Math.ceil(list.length / 10);
 
 
 /*** 
@@ -50,8 +49,8 @@ const showPages = (list, page) => {
    const startPoint = 10 * (page - 1);
    const endPoint = startPoint + 10;
    for (let i = 0; i < list.length; i += 1) {
-      let li = list[i];
-      if (li >= startPoint && li <= endPoint) {
+      let li = list[i]
+      if (i >= startPoint && i <= endPoint) {
          li.style.display = '';
       } else {
          li.style.display = 'none';
@@ -74,11 +73,12 @@ const showPages = (list, page) => {
 
 
 const appendPageLinks = (list) => {
-   numOfPages = Math.ceil(list.length / 10);
+   // dom elements
    pageDiv = document.querySelector('.page');
    div = document.createElement('div');
    div.className = 'pagination';
    ul = document.createElement('ul');
+   // create li + a elements and append to ul
    for (let i = 0; i < numOfPages; i += 1) {
       let li = document.createElement('li');
       let a = document.createElement('a');
@@ -86,11 +86,23 @@ const appendPageLinks = (list) => {
       li.appendChild(a);
       ul.appendChild(li)
    };
+   // append up to div and div to pageDiv
    div.appendChild(ul)
    pageDiv.appendChild(div);
+   firstPage = parseInt(ul.firstElementChild.firstElementChild.textContent);
+   showPages(list, firstPage);
 };
 
 appendPageLinks(list);
+
+div.addEventListener('click', (e) => {
+   number = e.target.textContent;
+   number.className = 'activated';
+   showPages(list, number);
+
+
+   
+});
 
 
 
