@@ -9,6 +9,7 @@ FSJS project 2 - List Filter and Pagination
 // Global Variable
 
 const list = document.getElementsByClassName('student-list')[0].children;
+const pageHeader = document.getElementsByClassName('page-header')[0];
 
 // ShowPage Function
 /*** 
@@ -72,7 +73,23 @@ const appendPageLinks = (list) => {
    });
 };
 
+const appendSearch = () => {
+   const searchDiv = document.createElement('div');
+   searchDiv.className = 'student-search';
+
+   const searchInput = document.createElement('input');
+   searchInput.placeholder = 'Search for students...';
+
+   const searchButton = document.createElement('button');
+   searchButton.textContent = 'Search';
+
+   searchDiv.appendChild(searchInput);
+   searchDiv.appendChild(searchButton)
+   pageHeader.appendChild(searchDiv);
+}
+
 appendPageLinks(list);
+appendSearch();
 
 
 
