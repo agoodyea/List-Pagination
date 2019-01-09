@@ -86,6 +86,22 @@ const appendSearch = () => {
    searchDiv.appendChild(searchInput);
    searchDiv.appendChild(searchButton)
    pageHeader.appendChild(searchDiv);
+
+   searchInput.addEventListener('keyup', (e) => {
+      const term = e.target.value;
+      for (let i = 0; i < list.length; i += 1) {
+         const li = list[i].firstElementChild;
+         const liDetails = li.children;
+         for (let i = 0; i < list.liDetails; i += 1) {
+            const text = liDetails[i].textContent;
+            if (text.includes(term)) {
+               
+            }
+         }
+      }
+
+
+   })
 }
 
 appendPageLinks(list);
