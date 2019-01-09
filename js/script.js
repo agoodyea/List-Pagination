@@ -9,14 +9,11 @@ FSJS project 2 - List Filter and Pagination
 // Global Variable
 
 const list = document.getElementsByClassName('student-list')[0].children;
-const numOfPages = Math.ceil(list.length / 10);
-const div = document.createElement('div');
-div.className = 'pagination';
-
 
 // ShowPage Function
 /*** 
-   This function takes a list and page
+   This function takes a list and page number and takes displays a set of 10 list items
+   associated with that page number while hiding the rest.
 ***/
 
 const showPage = (list, page) => {
@@ -32,19 +29,16 @@ const showPage = (list, page) => {
    }
 };
 
-/*** 
-   Create the `appendPageLinks function` to generate, append, and add 
-   functionality to the pagination buttons.
-***/
 // Append Page Links Function
 /*** 
 
 ***/
 
-
 const appendPageLinks = (list) => {
    // create dom elements
    const pageDiv = document.querySelector('.page');
+   const div = document.createElement('div');
+   div.className = 'pagination';
    const ul = document.createElement('ul');
    const numOfPages = Math.ceil(list.length / 10);
    // create li + a elements and append to ul
@@ -63,21 +57,23 @@ const appendPageLinks = (list) => {
    pageDiv.appendChild(div);
    firstPage = ul.firstElementChild.firstElementChild.textContent;
    showPage(list, firstPage);
+
+   // event listner for div holding page links
+   div.addEventListener('click', (e) => {
+      linkList = e.target.parentElement.parentElement.children;
+      link = e.target;
+      number = link.textContent;
+      for (let i = 0; i < linkList.length; i += 1) {
+         a = linkList[i].firstElementChild;
+         a.className ='';
+      }
+      link.className = 'active';
+      showPage(list, number);
+   });
 };
 
 appendPageLinks(list);
 
-div.addEventListener('click', (e) => {
-   linkList = e.target.parentElement.parentElement.children;
-   link = e.target;
-   number = link.textContent;
-   for (let i = 0; i < linkList.length; i += 1) {
-      a = linkList[i].firstElementChild;
-      a.className ='';
-   }
-   link.className = 'active';
-   showPage(list, number);
-});
 
 
 
