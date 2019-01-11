@@ -10,6 +10,7 @@ FSJS project 2 - List Filter and Pagination
 
 const list = document.getElementsByClassName('student-list')[0].children;
 const pageHeader = document.getElementsByClassName('page-header')[0];     // <---- consider moving
+let executed = false;
 
 // ShowPage Function
 /*** 
@@ -39,10 +40,20 @@ const showPage = (list, page) => {
 const appendPageLinks = (list) => {
    // create and select dom elements for page links
    const pageDiv = document.querySelector('.page');
+   if (executed) {
+      pageDiv.removeChild(pageDiv.lastElementChild);
+      
+   }else {
+      executed = true;
+   }
    const div = document.createElement('div');
    div.className = 'pagination';
    const ul = document.createElement('ul');
-   const numOfPages = Math.ceil(list.length / 10);
+   console.log(list);
+   let numOfPages = Math.ceil(list.length / 10);
+   if (numOfPages < 1) {
+      numOfPages = 1
+   };
    // create the required page links and append to ul
    for (let i = 0; i < numOfPages; i += 1) {
       let li = document.createElement('li');
@@ -67,7 +78,7 @@ const appendPageLinks = (list) => {
    div.addEventListener('click', (e) => {
       linkList = e.target.parentElement.parentElement.children;
       activeLink = e.target;
-      number = link.textContent;
+      number = activeLink.textContent;
       for (let i = 0; i < linkList.length; i += 1) {
          a = linkList[i].firstElementChild;
          a.className ='';
@@ -97,23 +108,24 @@ const appendSearch = () => {
    // add keyup event listner to searchInput.
    searchInput.addEventListener('keyup', (e) => {
       const term = e.target.value;
+      let searchList = document.createElement('ul');
       // loop through each student.
       for (let i = 0; i < list.length; i += 1) {
-         if (term === '') {
-            break;
-         }
          const li = list[i];
          const studentDetailsList = list[i].firstElementChild.children;
          // loop through the details of each student.
          for (let i = 0; i < studentDetailsList.length; i += 1) {
             const text = studentDetailsList[i].textContent;
+            // display a student if their details contain the term
             if (text.includes(term)) {
-               li.style.display = ''
+               searchList.appendChild(li);
             }else {
-               li.style.display = 'none';
+               continue;
             }
          }
       }
+      searchList = searchList.children;
+      appendPageLinks(searchList);
    })
 }
 
