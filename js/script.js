@@ -9,11 +9,11 @@ FSJS project 2 - List Filter and Pagination
 // Global Variable
 
 const list = document.getElementsByClassName('student-list')[0].children;
-const pageHeader = document.getElementsByClassName('page-header')[0];
+const pageHeader = document.getElementsByClassName('page-header')[0];     // <---- consider moving
 
 // ShowPage Function
 /*** 
-   This function takes a list and page number and takes displays a set of 10 list items
+   This function takes a list and page number and displays a set of 10 list items
    associated with that page number while hiding the rest.
 ***/
 
@@ -32,17 +32,18 @@ const showPage = (list, page) => {
 
 // Append Page Links Function
 /*** 
-
+   This function creates the required amount of page links for the list it recieves
+   and appends them to the page.
 ***/
 
 const appendPageLinks = (list) => {
-   // create dom elements
+   // create and select dom elements for page links
    const pageDiv = document.querySelector('.page');
    const div = document.createElement('div');
    div.className = 'pagination';
    const ul = document.createElement('ul');
    const numOfPages = Math.ceil(list.length / 10);
-   // create li + a elements and append to ul
+   // create the required page links and append to ul
    for (let i = 0; i < numOfPages; i += 1) {
       let li = document.createElement('li');
       let a = document.createElement('a');
@@ -53,56 +54,69 @@ const appendPageLinks = (list) => {
       li.appendChild(a);
       ul.appendChild(li)
    };
-   // append ul to div and div to pageDiv
+   // append ul to pagination div and pagination div to page div.
+   // pass list and declared first page to showPage function.
    div.appendChild(ul)
    pageDiv.appendChild(div);
-   firstPage = ul.firstElementChild.firstElementChild.textContent;
+   const firstPage = ul.firstElementChild.firstElementChild.textContent;
    showPage(list, firstPage);
 
-   // event listner for div holding page links
+   // add click event listner on pagination div.
+   // when a page link is click all link classes are set to empty and target is set to active.
+   // showPage is called to display required students for chosen page.
    div.addEventListener('click', (e) => {
       linkList = e.target.parentElement.parentElement.children;
-      link = e.target;
+      activeLink = e.target;
       number = link.textContent;
       for (let i = 0; i < linkList.length; i += 1) {
          a = linkList[i].firstElementChild;
          a.className ='';
       }
-      link.className = 'active';
+      activeLink.className = 'active';
       showPage(list, number);
    });
 };
 
+// appendSearch function
+/*** 
+   
+***/
+
 const appendSearch = () => {
+   // create and append search elements.
    const searchDiv = document.createElement('div');
    searchDiv.className = 'student-search';
-
    const searchInput = document.createElement('input');
    searchInput.placeholder = 'Search for students...';
-
    const searchButton = document.createElement('button');
    searchButton.textContent = 'Search';
-
    searchDiv.appendChild(searchInput);
    searchDiv.appendChild(searchButton)
    pageHeader.appendChild(searchDiv);
 
+   // add keyup event listner to searchInput.
    searchInput.addEventListener('keyup', (e) => {
       const term = e.target.value;
+      // loop through each student.
       for (let i = 0; i < list.length; i += 1) {
-         const li = list[i].firstElementChild;
-         const liDetails = li.children;
-         for (let i = 0; i < list.liDetails; i += 1) {
-            const text = liDetails[i].textContent;
+         if (term === '') {
+            break;
+         }
+         const li = list[i];
+         const studentDetailsList = list[i].firstElementChild.children;
+         // loop through the details of each student.
+         for (let i = 0; i < studentDetailsList.length; i += 1) {
+            const text = studentDetailsList[i].textContent;
             if (text.includes(term)) {
-               
+               li.style.display = ''
+            }else {
+               li.style.display = 'none';
             }
          }
       }
-
-
    })
 }
+
 
 appendPageLinks(list);
 appendSearch();
