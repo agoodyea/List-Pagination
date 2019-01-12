@@ -49,7 +49,6 @@ const appendPageLinks = (list) => {
    const div = document.createElement('div');
    div.className = 'pagination';
    const ul = document.createElement('ul');
-   console.log(list);
    let numOfPages = Math.ceil(list.length / 10);
    if (numOfPages < 1) {
       numOfPages = 1
@@ -70,6 +69,7 @@ const appendPageLinks = (list) => {
    div.appendChild(ul)
    pageDiv.appendChild(div);
    const firstPage = ul.firstElementChild.firstElementChild.textContent;
+   console.log(list);
    showPage(list, firstPage);
 
    // add click event listner on pagination div.
@@ -116,9 +116,11 @@ const appendSearch = () => {
          // loop through the details of each student.
          for (let i = 0; i < studentDetailsList.length; i += 1) {
             const text = studentDetailsList[i].textContent;
-            // display a student if their details contain the term
+            // add student to searchList if their details contain the term
             if (text.includes(term)) {
-               searchList.appendChild(li);
+               let cln = li.cloneNode(true);
+               searchList.appendChild(cln);
+               break;
             }else {
                continue;
             }
