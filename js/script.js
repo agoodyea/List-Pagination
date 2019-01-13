@@ -108,61 +108,42 @@ const appendSearch = () => {
    searchDiv.appendChild(searchButton)
    pageHeader.appendChild(searchDiv);
 
+   const searchList = (term) => {
+      let searchList = document.createElement('ul');
+      // loop through each student.
+      for (let i = 0; i < list.length; i += 1) {
+         const li = list[i];
+         const studentDetailsList = list[i].firstElementChild.children;
+         // loop through the details of each student.
+         for (let i = 0; i < studentDetailsList.length; i += 1) {
+            const text = studentDetailsList[i].textContent;
+            // add student to searchList if their details contain the term
+            if (text.includes(term)) {
+               let cln = li.cloneNode(true);
+               searchList.appendChild(cln);
+               break;
+            }else {
+               continue;
+            }
+         }
+      }
+      pageDiv.removeChild(pageDiv.children[1]);
+      pageDiv.insertBefore(searchList, pageDiv.lastElementChild);
+      searchList = searchList.children;
+      appendPageLinks(searchList);
+   }
+   
+   // add click and keyup event listners to search elements. Call 
    searchButton.addEventListener('click', (e) => {
       const term = e.target.previousElementSibling.value;
-      let searchList = document.createElement('ul');
-      // loop through each student.
-      for (let i = 0; i < list.length; i += 1) {
-         const li = list[i];
-         const studentDetailsList = list[i].firstElementChild.children;
-         // loop through the details of each student.
-         for (let i = 0; i < studentDetailsList.length; i += 1) {
-            const text = studentDetailsList[i].textContent;
-            // add student to searchList if their details contain the term
-            if (text.includes(term)) {
-               let cln = li.cloneNode(true);
-               searchList.appendChild(cln);
-               break;
-            }else {
-               continue;
-            }
-         }
-      }
-      pageDiv.removeChild(pageDiv.children[1]);
-      pageDiv.insertBefore(searchList, pageDiv.lastElementChild);
-      searchList = searchList.children;
-      appendPageLinks(searchList);
+      searchList(term);
    })
 
-   
-
-   // add keyup event listner to searchInput.
    searchInput.addEventListener('keyup', (e) => {
       const term = e.target.value;
-      let searchList = document.createElement('ul');
-      // loop through each student.
-      for (let i = 0; i < list.length; i += 1) {
-         const li = list[i];
-         const studentDetailsList = list[i].firstElementChild.children;
-         // loop through the details of each student.
-         for (let i = 0; i < studentDetailsList.length; i += 1) {
-            const text = studentDetailsList[i].textContent;
-            // add student to searchList if their details contain the term
-            if (text.includes(term)) {
-               let cln = li.cloneNode(true);
-               searchList.appendChild(cln);
-               break;
-            }else {
-               continue;
-            }
-         }
-      }
-      pageDiv.removeChild(pageDiv.children[1]);
-      pageDiv.insertBefore(searchList, pageDiv.lastElementChild);
-      searchList = searchList.children;
-      appendPageLinks(searchList);
-   })
-}
+      searchList(term);
+   });
+};
 
 
 appendPageLinks(list);
