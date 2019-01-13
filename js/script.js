@@ -9,6 +9,8 @@ FSJS project 2 - List Filter and Pagination
 // Global Variable
 
 const list = document.getElementsByClassName('student-list')[0].children;
+const pageDiv = document.getElementsByClassName('page')[0];
+const studentList = document.getElementsByClassName('student-list')[0];
 const pageHeader = document.getElementsByClassName('page-header')[0];     // <---- consider moving
 let executed = false;
 
@@ -39,15 +41,15 @@ const showPage = (list, page) => {
 
 const appendPageLinks = (list) => {
    // create and select dom elements for page links
-   const pageDiv = document.querySelector('.page');
    if (executed) {
+      console.log(pageDiv.lastElementChild);
       pageDiv.removeChild(pageDiv.lastElementChild);
       
    }else {
       executed = true;
    }
-   const div = document.createElement('div');
-   div.className = 'pagination';
+   const paginationDiv = document.createElement('div');
+   paginationDiv.className = 'pagination';
    const ul = document.createElement('ul');
    let numOfPages = Math.ceil(list.length / 10);
    if (numOfPages < 1) {
@@ -66,16 +68,16 @@ const appendPageLinks = (list) => {
    };
    // append ul to pagination div and pagination div to page div.
    // pass list and declared first page to showPage function.
-   div.appendChild(ul)
-   pageDiv.appendChild(div);
+   paginationDiv.appendChild(ul);
+   pageDiv.appendChild(paginationDiv); 
    const firstPage = ul.firstElementChild.firstElementChild.textContent;
-   console.log(list);
+   // console.log(list);
    showPage(list, firstPage);
 
    // add click event listner on pagination div.
    // when a page link is click all link classes are set to empty and target is set to active.
    // showPage is called to display required students for chosen page.
-   div.addEventListener('click', (e) => {
+   paginationDiv.addEventListener('click', (e) => {
       linkList = e.target.parentElement.parentElement.children;
       activeLink = e.target;
       number = activeLink.textContent;
@@ -86,6 +88,7 @@ const appendPageLinks = (list) => {
       activeLink.className = 'active';
       showPage(list, number);
    });
+   return paginationDiv;
 };
 
 // appendSearch function
@@ -126,6 +129,8 @@ const appendSearch = () => {
             }
          }
       }
+      pageDiv.removeChild(pageDiv.children[1]);
+      pageDiv.insertBefore(searchList, pageDiv.lastElementChild);
       searchList = searchList.children;
       appendPageLinks(searchList);
    })
