@@ -39,7 +39,7 @@ const showPage = (list, page) => {
 ***/
 
 const appendPageLinks = (list) => {
-   // create and select dom elements for page links
+   // test for existing pag links and remove if the exist.
    if (executed) {
       pageDiv.removeChild(pageDiv.lastElementChild);
    }else {
@@ -70,7 +70,7 @@ const appendPageLinks = (list) => {
    const firstPage = ul.firstElementChild.firstElementChild.textContent;
    showPage(list, firstPage);
 
-   // add click event listner on pagination div.
+   // click event listener on pagination div.
    // when a page link is click all link classes are set to empty and target is set to active.
    // showPage is called to display required students for chosen page.
    paginationDiv.addEventListener('click', (e) => {
@@ -87,9 +87,9 @@ const appendPageLinks = (list) => {
    return paginationDiv;
 };
 
-// appendSearch function
+// searchFeatures function
 /*** 
-   
+   The function appends the required search elements to page
 ***/
 
 const searchFeatures = () => {
@@ -123,7 +123,7 @@ const searchFeatures = () => {
                continue;
             }
          }
-      } // display searchList or empty searchList with error message
+      } // display searchList or empty searchList with results error message
       if (!searchList.firstElementChild) {
          const error = document.createElement('h2');
          error.textContent = 'No search results found...';
@@ -150,6 +150,11 @@ const searchFeatures = () => {
    });
 };
 
-
+// call starter functions
 appendPageLinks(list);
 searchFeatures();
+
+
+// To do 
+// - clean up/refactor.
+// - handle type error when passing empty searchList to appendPageLinks.
